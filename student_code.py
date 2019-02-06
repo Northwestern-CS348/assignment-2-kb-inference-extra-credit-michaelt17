@@ -142,7 +142,144 @@ class KnowledgeBase(object):
         """
         ####################################################
         # Student code goes here
+        return_string = ""
+        space_counter = 0
 
+        if factq(fact_or_rule):
+            # print(fact_or_rule)
+            if fact_or_rule in self.facts:
+                # print(fact_or_rule)
+                return_string += "fact: "
+                return_string += str(fact_or_rule.statement)
+                if self.facts[self.facts.index(fact_or_rule)].asserted:
+                    return_string += " ASSERTED"
+                # print(return_string)
+                if self.facts[self.facts.index(fact_or_rule)].supported_by != []:
+                    return_string += "\n"
+                    space_counter += 2
+                    for support_fact in self.facts[self.facts.index(fact_or_rule)].supported_by:
+                        for i in range(space_counter):
+                            return_string += " "
+                        return_string += "SUPPORTED BY\n"
+                        space_counter += 2
+                        return_string += str(self.kb_explain_helper(support_fact[0],space_counter))
+                        return_string += "\n"
+                        return_string += str(self.kb_explain_helper(support_fact[1],space_counter))
+                        space_counter -= 2
+                        return_string += "\n"
+                        # print(support_fact[0])
+                        # print(support_fact[1])
+                return return_string
+            else:
+                return_string += "Fact is not in the KB"
+                return return_string
+        elif isinstance(fact_or_rule, Rule):
+            # print(fact_or_rule)
+            if fact_or_rule in self.rules:
+                # print(fact_or_rule)
+                return_string += "rule: ("
+                for rule_statement in fact_or_rule.lhs:
+                    return_string += str(rule_statement)
+                    if rule_statement != fact_or_rule.lhs[-1]:
+                        return_string += ","
+                    else:
+                        return_string += ")"
+                    return_string += " "
+                return_string += "-> "
+                return_string += str(fact_or_rule.rhs)
+                return_string += ")"
+                if self.rules[self.rules.index(fact_or_rule)].asserted:
+                    return_string += " ASSERTED"
+
+                    if self.rules[self.rules.index(fact_or_rule)].supported_by != []:
+                        return_string += "\n"
+                        space_counter += 2
+                        for support_rule in self.rules[self.rules.index(fact_or_rule)].supported_by:
+                            for i in range(space_counter):
+                                return_string += " "
+                            return_string += "SUPPORTED BY\n"
+                            space_counter += 2
+                            return_string += str(self.kb_explain_helper(support_rule[0],space_counter))
+                            return_string += "\n"
+                            return_string += str(self.kb_explain_helper(support_rule[1],space_counter))
+                            space_counter -= 2
+                            return_string += "\n"
+
+                    return return_string
+            else:
+                return_string += "Rule is not in the KB"
+                return return_string
+
+    def kb_explain_helper(self, fact_or_rule, new_space_counter):
+        return_string = ""
+
+        for i in range(new_space_counter):
+            return_string += " "
+
+        if factq(fact_or_rule):
+            # print(fact_or_rule)
+            if fact_or_rule in self.facts:
+                # print(fact_or_rule)
+                return_string += "fact: "
+                return_string += str(fact_or_rule.statement)
+                if self.facts[self.facts.index(fact_or_rule)].asserted:
+                    return_string += " ASSERTED"
+                # print(return_string)
+                if self.facts[self.facts.index(fact_or_rule)].supported_by != []:
+                    # return_string += "\n"
+                    new_space_counter += 2
+                    for support_fact in self.facts[self.facts.index(fact_or_rule)].supported_by:
+                        for i in range(new_space_counter):
+                            return_string += " "
+                        return_string += "SUPPORTED BY\n"
+                        new_space_counter += 2
+                        return_string += str(self.kb_explain_helper(support_fact[0],new_space_counter))
+                        return_string += "\n"
+                        return_string += str(self.kb_explain_helper(support_fact[1],new_space_counter))
+                        # return_string += "\n"
+                        # print(support_fact[0])
+                        # print(support_fact[1])
+                return return_string
+            else:
+                return_string += "Fact is not in the KB"
+                return return_string
+        elif isinstance(fact_or_rule, Rule):
+            # print(fact_or_rule)
+            if fact_or_rule in self.rules:
+                # print(fact_or_rule)
+                return_string += "rule: ("
+                for rule_statement in fact_or_rule.lhs:
+                    return_string += str(rule_statement)
+                    if rule_statement != fact_or_rule.lhs[-1]:
+                        return_string += ","
+                    else:
+                        return_string += ")"
+                    return_string += " "
+                return_string += "-> "
+                return_string += str(fact_or_rule.rhs)
+
+                if self.rules[self.rules.index(fact_or_rule)].asserted:
+                    return_string += " ASSERTED"
+
+                if self.rules[self.rules.index(fact_or_rule)].supported_by != []:
+                    # print("hello")
+                    return_string += "\n"
+                    new_space_counter += 2
+                    for support_rule in self.rules[self.rules.index(fact_or_rule)].supported_by:
+                        for i in range(new_space_counter):
+                            return_string += " "
+                        return_string += "SUPPORTED BY\n"
+                        new_space_counter += 2
+                        return_string += str(self.kb_explain_helper(support_rule[0],new_space_counter))
+                        return_string += "\n"
+                        return_string += str(self.kb_explain_helper(support_rule[1],new_space_counter))
+                        new_space_counter -= 2
+                        # return_string += "\n"
+
+                return return_string
+            else:
+                return_string += "Rule is not in the KB"
+                return return_string
 
 class InferenceEngine(object):
     def fc_infer(self, fact, rule, kb):
@@ -154,7 +291,7 @@ class InferenceEngine(object):
             kb (KnowledgeBase) - A KnowledgeBase
 
         Returns:
-            Nothing            
+            Nothing
         """
         printv('Attempting to infer from {!r} and {!r} => {!r}', 1, verbose,
             [fact.statement, rule.lhs, rule.rhs])

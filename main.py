@@ -8,13 +8,13 @@ class KBTest(unittest.TestCase):
     def setUp(self):
         # # Assert starter facts
         self.KB = KnowledgeBase([], [])
-        
+
     def compare(self, expected, actual):
         elist = expected.split('\n')
         alist = actual.split('\n')
         for e, a in zip(elist, alist):
             if e.lower() != a.rstrip().lower():
-                self.assertEquals('"{0}" ({1} lead spaces)'.format(e, len(e) - len(e.lstrip())), 
+                self.assertEquals('"{0}" ({1} lead spaces)'.format(e, len(e) - len(e.lstrip())),
                     '"{0}" ({1} lead spaces)'.format(a, len(a) - len(a.strip())))
 
     def test01(self):
@@ -44,7 +44,7 @@ class KBTest(unittest.TestCase):
         # first set of support
         f0.supported_by.append([f3, r4])
         r4.supported_by.append([f2, r3])
-        r3.supported_by.append([f1, r1])        
+        r3.supported_by.append([f1, r1])
 
         # second set of support
         f0.supported_by.append([f4, r5])
@@ -84,6 +84,10 @@ fact: (eats nyala leaves)\n\
         rule: ((eats ?x plantBasedFood), (isa ?y plantBasedFood)) -> (eats ?x ?y) ASSERTED\
 '
         actual = self.KB.kb_explain(read.parse_input("fact: (eats nyala leaves)"))
+        print("")
+        print(actual)
+        print("")
+        print(self.expected)
         self.compare(self.expected, actual)
 
 
