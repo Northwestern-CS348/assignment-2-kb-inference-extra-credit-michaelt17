@@ -3,14 +3,14 @@ TESTS WITH ERRORS
 TESTS FAILED  
 test03 (gradingtests.UnitTests)
 Traceback (most recent call last):
-  File "/Users/k2i/academics/automatedgradingapp/app/testing/kb-inference-ec/gradingtests.py", line 73, in test03
-    self.compare(self.KB.kb_explain(fact4), answer1)
+  File "/Users/k2i/academics/automatedgradingapp/app/testing/kb-inference-ec/gradingtests.py", line 74, in test03
+    self.compare(self.expected, actual)
   File "/Users/k2i/academics/automatedgradingapp/app/testing/kb-inference-ec/gradingtests.py", line 18, in compare
     '"{0}" ({1} lead spaces)'.format(a, len(a) - len(a.strip())))
-AssertionError: '"        fact: (on A B)          SUPPORTED BY" (8 lead spaces)' != '"        fact: (on A B)" (8 lead spaces)'
-- "        fact: (on A B)          SUPPORTED BY" (8 lead spaces)
-?                        ----------------------
-+ "        fact: (on A B)" (8 lead spaces)
+AssertionError: '"        fact: (on A B)" (8 lead spaces)' != '"        fact: (on A B)          SUPPORTED BY" (8 lead spaces)'
+- "        fact: (on A B)" (8 lead spaces)
++ "        fact: (on A B)          SUPPORTED BY" (8 lead spaces)
+?                        ++++++++++++++++++++++
 
 
 -------------------------------
